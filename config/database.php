@@ -1,7 +1,7 @@
 <?php
 function db() {
-    $servidor = "localhost";
-    $usuario = "root";
+    $servidor = "192.168.0.117";
+    $usuario = "chuc";
     $password = "chuc";
     $db = "fincoop";
     $conexion = new mysqli($servidor, $usuario, $password, $db);

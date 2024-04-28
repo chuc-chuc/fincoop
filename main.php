@@ -4,6 +4,7 @@ ini_set('display_errors', '1');
 require_once "controller/c_main.php";
 require_once "config/database.php";
 require_once "config/app.php";
+require_once "config/menus.php";
 $db = db();
 $controller = new MainController($db);
 if (isset($_POST['metodo']) && $_POST['metodo'] == 'sesion') {

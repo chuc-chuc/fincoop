@@ -4,6 +4,7 @@ ini_set('display_errors', '1');
 require_once "controller/c_caja.php";
 require_once "config/database.php";
 require_once "config/app.php";
+require_once "config/menus.php";
 $db = db();
 $controller = new CajaController($db);
 $modulo = 'caja'; //nombre del modulo
