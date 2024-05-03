@@ -20,6 +20,10 @@ if ($acceso) {
         $ruta = $_GET['ruta'];
         switch ($ruta) {
             case 'index':
+            case 'bodega':
+            case 'pagos':
+            case 'pagosex':
+            case 'transaciones':
                 // Verificamos si el método existe en el objeto controller antes de llamarlo.
                 if (method_exists($controller, $ruta)) {
                     $controller->$ruta();
@@ -32,8 +36,7 @@ if ($acceso) {
                 break;
         }
     } else {
-        head();
-        require_once "404.php";
+        $controller->index();
     }
 } else {
     head();

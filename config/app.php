@@ -14,6 +14,7 @@ function head()
         <script src="config/js/tailwind.js"></script>
         <script src="config/js/sweetalert2.all.min.js"></script>
         <link rel="stylesheet" href="config/css/sweetalert2.min.css">
+        <script src="config/js/alpine.min.js"></script>
     </head>
 
     <body>
@@ -127,31 +128,31 @@ function sidebarInicio()
                                         <li class="">
                                             <span class="flex font-medium text-sm text-gray-200 py-2 uppercase border-b border-red-400">MENU</span>
                                         </li>
-        <script>
-            document.addEventListener('DOMContentLoaded', () => {
-                // Selecciona los botones y el menú lateral por su ID
-                const openSidebarButton = document.getElementById('openSidebar');
-                const closeSidebarButton = document.getElementById('closeSidebar');
-                const sidebar = document.getElementById('sidebar');
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', () => {
+                                                // Selecciona los botones y el menú lateral por su ID
+                                                const openSidebarButton = document.getElementById('openSidebar');
+                                                const closeSidebarButton = document.getElementById('closeSidebar');
+                                                const sidebar = document.getElementById('sidebar');
 
-                // Escucha para el botón de abrir
-                openSidebarButton.addEventListener('click', () => {
-                    sidebar.classList.remove('hidden'); // Muestra el menú
-                });
+                                                // Escucha para el botón de abrir
+                                                openSidebarButton.addEventListener('click', () => {
+                                                    sidebar.classList.remove('hidden'); // Muestra el menú
+                                                });
 
-                // Escucha para el botón de cerrar
-                closeSidebarButton.addEventListener('click', () => {
-                    sidebar.classList.add('hidden'); // Oculta el menú
-                });
-            });
-        </script>
-    <?php
-                        }
-                        function sidebarMiniFinal()
-                        {
-    ?>
-        
-        </ul>
+                                                // Escucha para el botón de cerrar
+                                                closeSidebarButton.addEventListener('click', () => {
+                                                    sidebar.classList.add('hidden'); // Oculta el menú
+                                                });
+                                            });
+                                        </script>
+                                    <?php
+                                }
+                                function sidebarMiniFinal()
+                                {
+                                    ?>
+
+                                    </ul>
                                 </li>
                             </ul>
                         </nav>
@@ -160,27 +161,32 @@ function sidebarInicio()
             </div>
         </div>
     <?php
-                        }
-                        if (isset($_POST['logout'])) {
-    
-                            session_start();
-                                // Destruir todas las variables de sesión.
-                                $_SESSION = array();
-                            
-                                // Si se desea destruir la sesión completamente, borra también la cookie de sesión.
-                                if (ini_get("session.use_cookies")) {
-                                    $params = session_get_cookie_params();
-                                    setcookie(session_name(), '', time() - 42000,
-                                        $params["path"], $params["domain"],
-                                        $params["secure"], $params["httponly"]
-                                    );
                                 }
-                            
-                                // Finalmente, destruir la sesión.
-                                session_destroy();
-                            
-                                // Redireccionar al usuario a la página de inicio o login después de cerrar la sesión
-                                header("Location: ../index.php");
-                                exit;
-                            }
+                                if (isset($_POST['logout'])) {
+
+                                    session_start();
+                                    // Destruir todas las variables de sesión.
+                                    $_SESSION = array();
+
+                                    // Si se desea destruir la sesión completamente, borra también la cookie de sesión.
+                                    if (ini_get("session.use_cookies")) {
+                                        $params = session_get_cookie_params();
+                                        setcookie(
+                                            session_name(),
+                                            '',
+                                            time() - 42000,
+                                            $params["path"],
+                                            $params["domain"],
+                                            $params["secure"],
+                                            $params["httponly"]
+                                        );
+                                    }
+
+                                    // Finalmente, destruir la sesión.
+                                    session_destroy();
+
+                                    // Redireccionar al usuario a la página de inicio o login después de cerrar la sesión
+                                    header("Location: ../index.php");
+                                    exit;
+                                }
     ?>
