@@ -11,7 +11,7 @@ if (isset($_POST['metodo']) && $_POST['metodo'] == 'sesion') {
     $controller->servicios('sesion');
     exit;
 }
-$modulo = 'admin'; //nombre del modulo
+$modulo = 'menu'; //nombre del modulo
 $acceso = acceso($modulo); //verifica acceso al modulo
 if ($acceso) {
     //Servicios
@@ -43,6 +43,25 @@ if ($acceso) {
     head();
     //funcion para notificar error de acceso
 ?>
+
+    <div class="bg-gray-100 flex items-center justify-center h-screen">
+        <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+            <h2 class="text-xl font-bold mb-4">No tienen acceso, favor de solicitarlo</h2>
+            <div class="flex justify-center gap-4">
+                <button onclick="location.reload()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+                    Reintentar
+                </button>
+                <form method="POST" action="config/app.php">
+                    <button type="submit" name="logout" class="inline-flex items-center bg-red-500 border-0 py-2 px-3 -mt-2.5 focus:outline-none hover:bg-red-700 rounded text-base md:mt-0 ml-5 text-white">
+                        Salir
+                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
+                            <path d="M5 12h14M12 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
     <div class="flex items-center min-h-screen bg-gradient-to-r from-gray-50 to-slate-50 shadow-sm">
     </div>
     <script>
@@ -54,10 +73,10 @@ if ($acceso) {
                 showConfirmButton: false,
                 timer: 2000
             }).then(function() {
-                window.location = "index.php";
+                //window.location = "index.php";
             });
         }
-        alerta();
+        //alerta();
     </script>
 <?php
     exit;

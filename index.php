@@ -39,7 +39,6 @@ if (isset($_SESSION['usuario_id'])) {
 
 <body>
     <style>
-
         .flex-container {
             display: flex;
             justify-content: center;
@@ -58,61 +57,13 @@ if (isset($_SESSION['usuario_id'])) {
         <!-- Contenido sobre el fondo de dos colores -->
         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-11/12 sm:w-9/12 md:w-[32rem]">
             <!-- Tu contenido aquí -->
-            <div class="bg-white rounded-t-lg sm:p-4 w-full">
+            <div class="bg-white rounded-t-lg sm:p-2 w-full text-left">
                 <div class="sm:container">
-                    <div class="flex-container flex">
-                        <svg width="35" viewBox="0 0 90 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M34.2138 5.86107C34.7122 4.28095 36.3972 3.40401 37.9773 3.90239L76.9347 16.1896C78.5148 16.688 79.3917 18.373 78.8934 19.9531L72.8993 38.9574C72.2692 40.9554 69.8371 41.7086 68.188 40.4165L52.7882 28.3503C52.2168 27.9025 51.5023 27.6772 50.7773 27.7161L31.2415 28.7635C29.1495 28.8757 27.5896 26.8634 28.2198 24.8654L34.2138 5.86107Z" fill="url(#paint1_linear_1001_3)" />
-                            <path d="M13.3226 80.1965C11.7071 80.5642 10.0994 79.5527 9.73164 77.9371L0.665552 38.1067C0.297829 36.4912 1.30938 34.8834 2.92491 34.5157L22.3551 30.093C24.3979 29.6281 26.2761 31.347 25.9936 33.4229L23.3549 52.808C23.2569 53.5274 23.4232 54.2578 23.8228 54.864L34.5917 71.1973C35.7449 72.9464 34.7957 75.3089 32.7529 75.7738L13.3226 80.1965Z" fill="url(#paint2_linear_1001_3)" />
-                            <path d="M87.9774 60.8205C89.0945 62.0441 89.008 63.9417 87.7843 65.0587L57.6148 92.5988C56.3911 93.7158 54.4936 93.6294 53.3766 92.4057L39.9419 77.6883C38.5294 76.141 39.0976 73.6592 41.0426 72.8806L59.2053 65.6098C59.8793 65.34 60.4326 64.835 60.7626 64.1883L69.6548 46.762C70.6071 44.8959 73.1303 44.5557 74.5427 46.103L87.9774 60.8205Z" fill="url(#paint3_linear_1001_3)" />
-                            <defs>
-                                <linearGradient id="paint0_linear_1001_3" x1="268" y1="0" x2="268" y2="86" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#1A31A7" />
-                                    <stop offset="1" stop-color="#7C3AED" />
-                                </linearGradient>
-                                <linearGradient id="paint1_linear_1001_3" x1="62.4802" y1="11.9181" x2="43.6919" y2="47.2867" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#1A31A7" />
-                                    <stop offset="1" stop-color="#7C3AED" />
-                                </linearGradient>
-                                <linearGradient id="paint2_linear_1001_3" x1="4.27748" y1="52.74" x2="44.293" y2="51.0974" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#1A31A7" />
-                                    <stop offset="1" stop-color="#7C3AED" />
-                                </linearGradient>
-                                <linearGradient id="paint3_linear_1001_3" x1="68.56" y1="82.2363" x2="47.3853" y2="48.2426" gradientUnits="userSpaceOnUse">
-                                    <stop stop-color="#1A31A7" />
-                                    <stop offset="1" stop-color="#7C3AED" />
-                                </linearGradient>
-                            </defs>
+                    <div class="flex-container flex justify-start ">
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" preserveAspectRatio="xMidYMid" width="190" height="61" viewBox="0 0 794 242">
+                            <image xlink:href="data:img/png;base64,iVBORw0KGgoAAAANSUhEUgAAAxoAAADyCAMAAAD9YUMSAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAb1BMVEUAAADBAAPCBgnBAQT1kJf4j5f3h47xd3/WNDrEBwrAAAPAAQPBAQXAAATAAQTBAATCAgW9AQXBAwazCAi+AAP//wH//wPGJij//wTIOjr+/gb//wLBAQO/AQTCCArCBgj8/Bb9/gvYsq/RpaIAAABam39FAAAAAXRSTlMAQObYZgAAAAFiS0dEAIgFHUgAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAwCSURBVHja7Z1pdxvXEUQxUVY5UpwFyqIkzvL//2MISrFF8gF4r5fqnsG9PicffIxXPVVdAUACw9MJAF6xffnf7Wfb9u7nv/jlr379mw0Anrk0AwDeQjUAhvz0tPG+ehSATnytxnfVcwA04/SlGzxlALzkdOKdOMAAqgEw5OtvOADgJVQDYMiJbgCMONENgBEnugEw4kQ3AEac6AbACKoBMORENwBGvKjGu+ppANpwohsAI159JRYAvnB62w0+oA7w5lnjxEsqgGfe3GXk0o3fVk8FUM7bO/A88aF6KoByTsOnjY+/ox3w4Axu3Pb907/+ffVcAMWMbmr4h+qhAMoZ3/AT4OE57bsbJwApe/nASLVP8HjspBvVNsEDQjUAxlw2r/2HqapNgkfk8pKKagC8pXrtqQZ0pXrvqQZ0pXrxqQZ0pf2PqaoNgkflsn2t34pXGwQPS/XqUw3oSvXuUw3oSu+3G9XuwANTvfxUA7py2cC2b8WrzYGH5rKCH6s7QDWgG1vrO1NVuwOPzdMHDd9/V10CqgEN2dq+26h2Bh6dyxb+sboGVAP6Ud0AqgFdqa4A1YCuXPaw4fuNalsAmj5vVLsC0PTDVNWmAJx6dqPaE4BTz5dU1Z4AXKjuAdWApjS82We1JQDPPG9jqx/hVjsC8AWqATCmWzeq/QD4Sre3G9V+APxIr25UuwHwI9VloBrQleo2UA1oSqu3G9VmAHzDczea/Jiq2guAb9moBsCI56XscY+RaisAXnB5SfWn6lZQDWhIdSOoBnTlspYd3m5U+wDwmupOUA1oyvZ9dSuoBvSkx283ql0AeMtGNQCGVNeCakBXGnyYqtoCgBHVvaAa0JXqYlAN6Ep1M6gGNKW6GVQDukI1AMZQDYAxVANgDNUAGEI1zgN++tfV0+2HluGGXhHVeC7EmWpM0zzgjAurrcZ2+SdSayT3vP6fPp1vcXW+mKWweRTsjmXw6dUZW78DUgwOiEGhd/ZUw3NxC5epDi1ncRSbHE+izQ6//iwQvNTifJu/XOvGX4O2weRSWSqeAeSLHUCq0VazFIIT1fjbtWpE7YLpmLJUfPIVy+0k1WmjVQrB8/nz+R6f7NUI+v9fdWCZy1K14XZSrbYZpVCcrMbZOl+M9eq8cnelbsmNpHptskkheP/11PX34VF7YDqkLJUA5cItN5HqtcmlDL13rzTSqxHyul0dV3YqpYtuINXsqhBeo6/G/T2wHVGTSr5CSzLNtlikEKQaSyPnK/Qk02yLRRLB/GrcXQPbCRWpCCSakum2wSGJoKAa/h/4qMNSBFK97Itk2r1ukESQakwPLBFpS6bfy/5IBBXVuLMFtsfrU9GodCXT72V7FIKCt+F3l8D2eHkqIpm2ZBq+6o5CUFMN7+/Q1Emp9Kq3fY1MxxfNUQiKquG8TnVQRWE0J9PxRXMUgqpqbK7rVAclk6ve9jUyLV/zRiFINeb07j/G9Pcoqpd9kUzPl7xRCMqq4frwhTomnVr1si+SafqKNQpBXTU8n75Qp6QTq971VTJdX7BGIUg1pvTWHhdhSlcybZ+3RiEorIbjk0nqjCxixvGqV32VTNvnnVEIKqth/2iSwp33T1zTM1yb05O+RPtuckYhOPMF2Meoxi0907W5PGlMpvGzzij0pNUwfzZJnJBywupFXyfR+GlnQp298l9qq2H9cFK6O95tcCxR1Iw6DLlb8I7gvcxjVyNo78w6uhGlGIKP2pWVCZxXKa6Gccmt6rJVcEQYNKOQpFsNrxijCF9dDdvHk6rccQ142BdUs1fmxKvvvkh1NUw/yilzxyulm1GLLXrvokQksgDViFkE8yODZhRjy965KBGJLCCvhvJHo8I9sD40aEQ1xuxdexKTyDxUI2oPFh769+ABCzCG79mTRXX3JeqrYfhdc5k7qxd647FBs7TBvPJ2L9fE3VdYUI31T+KVubN+oUGSO8C1904nJUlUVGNbPafMHduVRsn2xh6/30VJClQjZwv2+nctk20xL8m6svvySqrxcnFsVylxx3ulUQP0xLEATu8k3tdUY1s7p8yd5Sv9kDZDRzwb4ApPEv6hq1HxPjxxjHZ4fTGbJnG9qBqaF1Rheawe8/HD3Ll7JyeE+5ZJVKqqsa2co0wlL4rqPc4gK4VNVY0bQlRjxijrYa/u21a9yAlkxfDI1dgWzlFmkp1F9S5Hk5XDI1djmz9HGUl6FtW7HExWDsLbJlwRoRpzPuUr7BVxEAmaV0QKqzF/s78OiSg09ok4iHjJKyKV1dhmzxEGcqca75JV9og4iHjJKyKl1dgmzxEGIvib4bdl9og2CFUWVGPOp3jF6n0ORBzEQ1RjmztHFsd2MxGd0t4QB/EQ1dimzlGlccOnDM3qhQ5k10FcEaEacz6liFYvdCDaICRK1dUwz67USlOtXug4tEFIlKjGnE9JstUbHYc0CIkS1ZjzaaT8nUJtL0iDkChRjTmfspSrNzoOZRASpdRqRF2DIok7PqWJV290HMIgJErJ1cj7ElBwEPd8eqkdKF+90IHogpAoUY05n24O8PEfCsH+yIKQRJ5djbDfmee6c9envBGq9zkQWRASofRqhH3UKtOd+z7NZPRBItkYWRISIaox51NiSoW7HI4oCUnm+dVIWp5Yd+7ZtLIR7zWaLRElIYlcUI2wrwMa3FnTdtyoNiObPeLOesqVOJUbOkevxh72QjtkTw/WXAmy9fZ/pKhGyo0xm+5c9BLsD2/YM65IXJVUI+yWVWp3NNtRNWaLize5InFVU42wOx2K3dHsR92Y9dduc0XiqqgaYfeOXjmwcD3WLrl40LoLt5oiMVVVDdddaozuSFYgYkWyB1XjyXrKFImpqmqE/3RTunGZEYYO2gRP2FG+ui+CarhT9q9IyKCd8IQ9Y4rEVFk1XH/6z+aOKGT/kkQM2gtH2DOmSEzVVSPsL8ZOn5ac8fspHUmK/bCHPWOKxFSq4c/YvSMhgzbDnvaEKRJThdWI/RvDqo1z66gGbYY57BlTvI+f4ayshtkuozuqhN0nRAzaDmvYM6b4U7kP1QhIOPmAvWJNe8IU7+Nn0FYj8qOpCndCdERzNsSY9oQpivDF1TC6VeVOiI5mzJbY0p5wRRE+1QjJ1/fwkDE7Ykt7whVF+Opq2Nyqcmd+YtfDQ8ZsiSntCVcU4curEfZdH4/rS3quID2PPQJRIRiO9Y6uf9awuBVs+qKgJ0hFhp2JyqDAVv2zhsWuYNMXBbOHzFjJNgRlYDjVOznVuC9oH9N+dcchJgPDod7BqcZ9QePjXFd3HGIyMBzqHbyiGutuhVo+wT9dUo/9zfCwoLxneucuqcayW5GOGwRTpQ5fjYy7cyl8pRoTgkKpQxJvjMLYmmpE3KgpdV+F3cjfzGpMP69/2GosmuU/wZmLTOigRDujcPZ8/lRSDf871bxtHSgmKHwMyW8nBESwfJ53Zqoxp6jSOSrB1kisnSnGuBqCq7t1TtayXlEUyRyWWG8k3pZVw/qbNLvXrlw0Kscl1hyFuY634e7pfC6l7OoNRYnIgQl1R+Eu1ZhWVGgcmUh7FPaWvQ1fMivCaX8sCo0DE+mPwt/KavhcCl7UmcEFEocmziCFwZPVML6iivLKbXPQ3uYrHJo4hxQO11bD8S2hwC1dGDxd4NiEWaSwmGosTp58/LEJ80jhcXE17N+Di1nR9clTDz88US4pXK6uhvnb0xEraps88ejjE+STwmeqYZg87+Tj8+zBe69RPwh8ftr6z/+63Yp/f876vcbkKY3ehnvVQ7Zr34R49R+B1U+r/+nO88bn3GoYf6seUYCr/Dcw4ci0DkGMWwKvra+mJsaLMstpceIKUwsDQY7l2+2pxrfzvf43cXbdeVBgRf5/YnjSEUEdh5hq6LhfA7hJ73hbsbNqAMigGgBDqAbAGKoBMIZqAIyhGgBDqAbAGKoBMIRqAIyhGgBjqAbAGKoBMOLOJ0OrxwOog2oAjKEaAEOoBsAYqgEwhmoAjKEaAGOoBsAYqgEwhGoAjKEaAGOoBsAYqgEwhGoAjKEaAGOoBsAYqgEwhmoADKEaAGOoBsAYqgEwhGoAjKEaAGOoBsAYqgEwhKcNgCE0A+AKVAME/A+nqoolwZLdKgAAAABJRU5ErkJggg==" width="794" height="242" />
                         </svg>
-                        <svg width="180" viewBox="0 0 450 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <defs>
-                                <linearGradient id="g1" x2="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0,-92,525,0,263.5,3)">
-                                    <stop offset="0" stop-color="#2a18b6" />
-                                    <stop offset=".99" stop-color="#0b0451" />
-                                    <stop offset="1" stop-color="#0b0451" />
-                                </linearGradient>
-                            </defs>
-                            <style>
-                                .t0 {
-                                    font-size: 100px;
-                                    fill: url(#g1);
-                                    font-weight: 900;
-                                    font-style: italic;
-                                    font-family: "DejaVuSans-BoldOblique", "DejaVu Sans"
-                                }
-                            </style>
-                            <text id="FinCooP" style="transform: matrix(1,0,0,1,10,108)">
-                                <tspan x="0" y="0" class="t0">F</tspan>
-                                <tspan y="0" class="t0">i</tspan>
-                                <tspan y="0" class="t0">n</tspan>
-                                <tspan y="0" class="t0">C</tspan>
-                                <tspan y="0" class="t0">o</tspan>
-                                <tspan y="0" class="t0">o</tspan>
-                                <tspan y="0" class="t0">P</tspan>
-                                <tspan y="0" class="t0">
-                                </tspan>
-                            </text>
-                        </svg>
+
                     </div>
                 </div>
             </div>

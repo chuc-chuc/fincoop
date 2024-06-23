@@ -1,132 +1,101 @@
 <?php
 include_once 'view/caja/head.php';
 ?>
-<div class="mx-auto bg-slate-200 p-6 rounded-lg shadow">
-    <div class="mx-auto bg-white p-3 rounded-lg shadow-lg flex justify-between">
-        <p class="flex title-font font-medium items-center text-gray-900">
-            <span class="ml-3 text-lg">Acciones Caja</span>
-        </p>
-        <div class="flex gap-2">
-            <button id="btnOpen" class="bg-green-500 hover:bg-green-700 active:bg-green-800 px-4 py-2 rounded-md text-white">
+<div class="bg-gray-100 flex items-center justify-center p-5">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
+        <h1 class="text-2xl font-bold mb-4 text-center">Control de Caja</h1>
+
+        <!-- Estado del Cajero -->
+        <div class="mb-6 text-center">
+            <h2 id="estadoCajero" class="text-xl font-semibold text-green-500">Cajero Aperturado</h2>
+        </div>
+
+        <!-- Botones de Apertura y Cierre -->
+        <div class="flex justify-center gap-4 mb-6">
+            <button id="btnApertura" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
                 Apertura
             </button>
-            <button id="btnClose" class="bg-blue-500 hover:bg-blue-700 active:bg-blue-800 px-4 py-2 rounded-md text-white">
+            <button id="btnCierre" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">
                 Cierre
             </button>
         </div>
+
+        <!-- Listado de Estatus -->
+        <div>
+            <h3 class="text-lg font-semibold mb-2">Estatus del Cajero:</h3>
+            <ul class="list-disc list-inside">
+                <li id="transacciones" class="mb-1">Cantidad de Transacciones: <span class="font-bold">120</span></li>
+                <li id="reversas" class="mb-1">Cantidad de Reversas: <span class="font-bold">5</span></li>
+                <li id="pedidosEfectivo" class="mb-1">Pedidos de Efectivo: <span class="font-bold">3</span></li>
+            </ul>
+        </div>
     </div>
-    <div class="mx-auto mt-2 bg-white p-6 rounded-lg shadow-lg">
-        <table class="w-full">
-            <tbody>
-                <!-- Title Row -->
-                <tr class="text-blue-600 border-b">
-                    <th class="text-left">No</th>
-                    <th class="text-right">Detalles</th>
-                </tr>
-
-                <!-- Data Rows -->
-                <tr class="font-bold">
-                    <td class="py-2">Cajero:</td>
-                    <td class="py-2 text-red-500 text-right">Juan Miguel Chuc</td>
-                </tr>
-                <tr class="font-bold">
-                    <td class="py-2">Estado</td>
-                    <td class="py-2 text-red-500 text-right">Abierto</td>
-                </tr>
-                <tr class="font-bold">
-                    <td class="py-2">Saldo</td>
-                    <td class="py-2 text-right text-red-500">Q 150.25</td>
-                </tr>
-                <tr class="font-bold">
-                    <td class="py-2">Pedido realizados (3)</td>
-                    <td class="py-2 text-right text-red-500">Q150,000.00</td>
-                </tr>
-                <tr class="font-bold">
-                    <td class="py-2">Efectivo Enviado (2)</td>
-                    <td class="py-2 text-right text-red-500">Q10,000.00</td>
-                </tr>
-                <tr class="font-bold">
-                    <td class="py-2">Transacciones</td>
-                    <td class="py-2 text-right text-red-500">150</td>
-                </tr>
-                <tr class="font-bold">
-                    <td class="py-2">Reversas</td>
-                    <td class="py-2 text-right text-red-500">2</td>
-                </tr>
-            </tbody>
-        </table>
+    <!-- Modal -->
+    <div id="miModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-50 p-2">
+        <div class="rounded shadow-md mb-4 px-2 w-11/12 sm:w-8/12 md:w-6/12 lg:w-5/12">
+            <div class="flex justify-between items-center border-b border-gray-200 bg-blue-700 p-4 rounded-t">
+                <div class="flex items-center justify-center">
+                    <p class="text-xl font-bold text-gray-100">Apertura / Cierre</p>
+                </div>
+                <button id="cerrarModal" type="button" class="end-2.5 text-gray-100 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Cerrar modal</span>
+                </button>
+            </div>
+            <!-- Contenido del formulario -->
+            <form id="miFormulario" class="p-4 bg-white">
+                <div class="mb-4">
+                    <label for="cantidad" class="block text-gray-700 font-bold mb-2">Monto:</label>
+                    <input type="number" id="cantidad" name="cantidad" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" required>
+                </div>
+                <input type="hidden" id="accion" name="metodo">
+                <div class="flex justify-end">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">OK</button>
+                </div>
+            </form>
+        </div>
     </div>
-</div>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const saldo = 150.25; // Replace with dynamic PHP value
+    <script>
+        $(document).ready(function() {
+            $('#btnApertura, #btnCierre').click(function() {
+                const accion = $(this).attr('id') === 'btnApertura' ? 'apertura' : 'cierre';
+                $('#accion').val(accion);
+                $('#miModal').removeClass('hidden');
+            });
 
-        document.getElementById('btnOpen').addEventListener('click', function() {
-            confirmAction('apertura');
-        });
-
-        document.getElementById('btnClose').addEventListener('click', function() {
-            if (saldo === 0) {
-                confirmAction('cierre');
-            } else {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Aún tiene saldo',
-                    text: 'No puede cerrar con saldo pendiente.'
-                });
-            }
-        });
-
-        function confirmAction(action) {
-            Swal.fire({
-                icon: 'info',
-                title: `Está seguro que desea realizar la ${action}?`,
-                showCancelButton: true,
-                confirmButtonText: `Confirmar`,
-                cancelButtonText: `Cancelar`,
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    var formData = new FormData();
-                    formData.append('metodo', action); // Make sure this is the correct field name and value
-
-                    $.ajax({
-                        url: 'caja.php', // URL where you'll handle the form submission
-                        type: 'POST',
-                        data: formData,
-                        contentType: false, // Needed for FormData
-                        processData: false, // Needed for FormData
-                        success: function(response) {
-                            console.log(response);
-                            if (response == 'Listo') {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Listo',
-                                    showConfirmButton: false,
-                                    timer: 2500
-                                }).then(() => {
-                                    window.location.reload();
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error',
-                                    text: response.message // Assuming the server sends back an error message
-                                });
-                            }
-                        },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error de AJAX',
-                                text: `Request failed: ${textStatus}`
-                            });
-                        }
-                    });
+            $('#cerrarModal').click(function() {
+                $('#miModal').addClass('hidden');
+            });
+            $('#miModal').click(function(event) {
+                if (event.target === this) {
+                    $('#miModal').addClass('hidden');
                 }
             });
-        }
-    });
-</script>
+
+            $('#miFormulario').submit(function(event) {
+                event.preventDefault();
+                const datos = $(this).serialize();
+                $.ajax({
+                    url: 'caja.php',
+                    type: 'POST',
+                    data: datos,
+                    success: function(response) {
+                        console.log(response);
+                        alert('Operación realizada con éxito');
+                        $('#miModal').addClass('hidden');
+                        location.reload();
+                    },
+                    error: function() {
+                        alert('Hubo un error en la operación');
+                    }
+                });
+            });
+        });
+    </script>
+</div>
+
 <?php
 include_once 'view/caja/footer.php';
 ?>
