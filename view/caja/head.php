@@ -1,8 +1,5 @@
 <?php
 head();
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
 if (!isset($_SESSION['usuario_id'])) {
     // Si no hay sesión de usuario, enviar código HTML con JavaScript para mostrar el mensaje
 ?>

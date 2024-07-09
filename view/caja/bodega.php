@@ -7,7 +7,7 @@ include_once 'view/caja/head.php';
     <div class="rounded shadow-md mb-4 px-2 w-11/12 sm:w-8/12 md:w-6/12 lg:w-5/12">
         <div class="flex justify-between items-center border-b border-gray-200 bg-blue-700 p-4 rounded-t">
             <div class="flex items-center justify-center">
-                <p class="text-xl font-bold text-gray-100">Solicitar</p>
+                <p class="text-xl font-bold text-gray-100">Nuevo</p>
             </div>
             <button id="cerrarModal" type="button" class="end-2.5 text-gray-100 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="authentication-modal">
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -17,7 +17,18 @@ include_once 'view/caja/head.php';
             </button>
         </div>
         <!-- Contenido del formulario -->
-        <form id="miFormulario" class="p-4 bg-white">
+        <form id="bodega" class="p-4 bg-white">
+            <!-- Nuevo campo: Selección de tipo -->
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="tipo">
+                    Tipo Transaccion
+                </label>
+                <select required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 w-1/2 p-2" id="metodo" name="metodo">
+                    <option value="">Seleccionar...</option>
+                    <option value="pedido">Pedido</option>
+                    <option value="envio">Envío</option>
+                </select>
+            </div>
             <!-- Campos del formulario -->
             <div class="sm:flex w-full">
                 <div class="mb-4 w-full">
@@ -25,10 +36,8 @@ include_once 'view/caja/head.php';
                         Efectivo
                     </label>
                     <input required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2" id="efectivoDisplay" type="text" placeholder="Efectivo">
-
                     <input name="efectivo" id="efectivo" type="hidden">
                 </div>
-
                 <div class="mb-4 sm:ml-2 w-full">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="numeroBoleta">
                         Número de boleta
@@ -42,6 +51,7 @@ include_once 'view/caja/head.php';
                 </label>
                 <textarea class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" id="comentario" placeholder="Comentario"></textarea>
             </div>
+
             <!-- Botón de envío dentro del formulario -->
             <div class="flex items-center justify-center">
                 <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" id="enviar">
@@ -49,6 +59,7 @@ include_once 'view/caja/head.php';
                 </button>
             </div>
         </form>
+
     </div>
 </div>
 
@@ -58,7 +69,7 @@ include_once 'view/caja/head.php';
     <div class="flex justify-between w-full pt-6 ">
         <p class="font-bold "> Pedidos Realizados</p>
         <button id="abrirModal" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-            Solicitar
+            Nuevo
         </button>
     </div>
     <div class="overflow-x-auto mt-6 rounded-lg bg-white">
@@ -138,7 +149,7 @@ include_once 'view/caja/head.php';
             }
         });
 
-        $('#miFormulario').submit(function(e) {
+        $('#bodega').submit(function(e) {
             e.preventDefault();
 
             // Crear un nuevo objeto FormData
@@ -150,7 +161,7 @@ include_once 'view/caja/head.php';
             //alert(efectivoValue);
 
             $.ajax({
-                url: 'procesar.php',
+                url: 'caja.php',
                 type: 'POST',
                 processData: false,
                 contentType: false,

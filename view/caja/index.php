@@ -5,28 +5,35 @@ include_once 'view/caja/head.php';
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w-lg">
         <h1 class="text-2xl font-bold mb-4 text-center">Control de Caja</h1>
 
-        <!-- Estado del Cajero -->
-        <div class="mb-6 text-center">
-            <h2 id="estadoCajero" class="text-xl font-semibold text-green-500">Cajero Aperturado</h2>
+        <div class="flex flex-col justify-center items-center gap-4 mb-6">
+            <?php
+            if ($estado_apertura == 0) {
+            ?>
+                <h1 class="text-xl font-bold mb-2 text-center">Estado <span class="text-red-500">Cerrado</span></h1>
+                <button id="btnApertura" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
+                    Apertura
+                </button>
+            <?php
+            } else {
+            ?>
+                <h1 class="text-xl font-bold mb-2 text-center">Estado: <span class="text-blue-500">Abierto</span></h1>
+                <button id="btnCierre" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">
+                    Cierre
+                </button>
+            <?php
+            }
+            ?>
         </div>
 
-        <!-- Botones de Apertura y Cierre -->
-        <div class="flex justify-center gap-4 mb-6">
-            <button id="btnApertura" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-700">
-                Apertura
-            </button>
-            <button id="btnCierre" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">
-                Cierre
-            </button>
-        </div>
 
         <!-- Listado de Estatus -->
         <div>
             <h3 class="text-lg font-semibold mb-2">Estatus del Cajero:</h3>
             <ul class="list-disc list-inside">
-                <li id="transacciones" class="mb-1">Cantidad de Transacciones: <span class="font-bold">120</span></li>
-                <li id="reversas" class="mb-1">Cantidad de Reversas: <span class="font-bold">5</span></li>
-                <li id="pedidosEfectivo" class="mb-1">Pedidos de Efectivo: <span class="font-bold">3</span></li>
+                <li id="transacciones" class="mb-1">Cantidad de Transacciones: <span class="font-bold"><?php echo $transaciones ?></span></li>
+                <li id="reversas" class="mb-1">Cantidad de Reversas: <span class="font-bold"><?php echo $transaciones ?></span></li>
+                <li id="pedidosEfectivo" class="mb-1">Pedidos de Efectivo: <span class="font-bold"><?php echo $pedido ?></span></li>
+                <li id="pedidosEfectivo" class="mb-1">Envios de Efectivo: <span class="font-bold"><?php echo $envio ?></span></li>
             </ul>
         </div>
     </div>
@@ -83,9 +90,26 @@ include_once 'view/caja/head.php';
                     data: datos,
                     success: function(response) {
                         console.log(response);
-                        alert('Operación realizada con éxito');
-                        $('#miModal').addClass('hidden');
-                        location.reload();
+                        if (response == "Listo") {
+                            $('#miModal').addClass('hidden');
+                            Swal.fire({
+                                position: "top-end",
+                                icon: "success", // El icono debe ser "success" en lugar de "Listo"
+                                title: "Operación Realizada",
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(function() {
+                                setTimeout(function() {
+                                    location.reload();
+                                }, 500); // Recarga después de 500 milisegundos (medio segundo)
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: "error",
+                                title: response,
+                                showConfirmButton: true
+                            });
+                        }
                     },
                     error: function() {
                         alert('Hubo un error en la operación');

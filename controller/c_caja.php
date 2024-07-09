@@ -19,6 +19,11 @@ class CajaController {
     
     public function index() {
         $main = new caja($this->db);
+        $estado_apertura = $main->estado_apertura();
+        $transaciones = $main->transaciones(1);
+        $reversas = $main->transaciones(2);
+        $pedido = $main->cantidad_tran(5);
+        $envio = $main->cantidad_tran(6);
         require_once "view/caja/index.php";
     }
     public function bodega()
