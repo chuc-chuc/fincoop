@@ -42,14 +42,14 @@ include_once 'view/caja/head.php';
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="numeroBoleta">
                         Número de boleta
                     </label>
-                    <input required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2" id="numeroBoleta" type="text" placeholder="Número de boleta">
+                    <input required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  w-full p-2" id="numeroBoleta" type="text" name="boleta" placeholder="Número de boleta">
                 </div>
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 text-sm font-bold mb-2" for="comentario">
                     Comentario
                 </label>
-                <textarea class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" id="comentario" placeholder="Comentario"></textarea>
+                <textarea class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500" id="comentario" name="comentario" placeholder="Comentario"></textarea>
             </div>
 
             <!-- Botón de envío dentro del formulario -->
@@ -167,7 +167,23 @@ include_once 'view/caja/head.php';
                 contentType: false,
                 data: formData,
                 success: function(response) {
-                    alert('Formulario enviado correctamente. Respuesta del servidor: ' + response);
+                    console.log(response);
+                    //alert('Formulario enviado correctamente. Respuesta del servidor: ' + response);
+                    if (response == 'Listo') {
+                        Swal.fire({
+                            icon: "success",
+                            title: "Operación Realizada",
+                            text: "Espere la confirmacion del encargado de bodega",
+                            tshowConfirmButton: false,
+                            timer: 3500
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: "error",
+                            title: response,
+                            tshowConfirmButton: true
+                        });
+                    }
                 },
                 error: function(xhr, status, error) {
                     alert('Ha ocurrido un error: ' + error);

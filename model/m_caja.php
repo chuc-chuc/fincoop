@@ -184,7 +184,7 @@ class caja
     }
     public function pedido()
     {
-        echo $estado_apertura = $this->estado_apertura();
+        $estado_apertura = $this->estado_apertura();
         if ($estado_apertura == 0) {
             echo 'Caja Cerrada Realice la Apetura';
             return;
@@ -192,18 +192,20 @@ class caja
         $db = $this->db;    
         $date = date("Y-m-d");
         $transacion = 2;
-        $estado = 1;
-        $cantidad = 2;
+        $estado = 3;
+        $efectivo = $_POST['efectivo'];
+        $boleta = $_POST['boleta'];
+        $comentario = $_POST['comentario'];
         try {
             $query = "INSERT INTO `fincoop`.`transacciones` 
-                    (`estado_transacion_id`, `tipo_transaccion_id`, `usuario`, `total`) 
-                    VALUES (?, ?, ?, ?)";
+                    (`estado_transacion_id`, `tipo_transaccion_id`, `usuario`, `total`, comentario, boleta) 
+                    VALUES (?, ?, ?, ?, ?, ?)";
 
             $stmt = $db->prepare($query);
             if (!$stmt) {
                 throw new Exception("Error al preparar la consulta: " . $db->error);
             }            // Bind de parámetros
-            $stmt->bind_param('iiid', $estado, $transacion, $this->id_usuario, $cantidad);
+            $stmt->bind_param('iiidss', $estado, $transacion, $this->id_usuario, $efectivo, $comentario, $boleta);
 
             // Ejecutar la consulta
             $stmt->execute();
