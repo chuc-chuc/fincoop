@@ -53,7 +53,7 @@ class caja
                     //throw new Exception($row['count(*)']);
                     throw new Exception("Ya existe una apertura de caja para el día de hoy.");
                 } else {
-                    $query = "INSERT INTO `fincoop`.`transacciones` 
+                    $query = "INSERT INTO `transacciones` 
                     (`estado_transacion_id`, `tipo_transaccion_id`, `usuario`, `total`) 
                     VALUES (?, ?, ?, ?)";
 
@@ -209,7 +209,7 @@ class caja
         $boleta = $_POST['boleta'];
         $comentario = $_POST['comentario'];
         try {
-            $query = "INSERT INTO `fincoop`.`transacciones` 
+            $query = "INSERT INTO `transacciones` 
                     (`estado_transacion_id`, `tipo_transaccion_id`, `usuario`, `total`, comentario, boleta) 
                     VALUES (?, ?, ?, ?, ?, ?)";
 
