@@ -24,7 +24,7 @@ class caja
 
         try {
             $query = "SELECT count(*) 
-                FROM fincoop.transacciones
+                FROM transacciones
                 WHERE estado_transacion_id = ?
                 AND tipo_transaccion_id = ?
                 AND fecha_creacion = ?
@@ -104,35 +104,47 @@ class caja
         $estado = 1;
         try {
             $query = "SELECT count(*) as apertura
-                FROM fincoop.transacciones
-                WHERE estado_transacion_id = ?
-                AND tipo_transaccion_id = ?
-                AND fecha_creacion = ?
-                AND usuario = ?";
+            FROM transacciones
+            WHERE estado_transacion_id = ?
+            AND tipo_transaccion_id = ?
+            AND fecha_creacion = ?
+            AND usuario = ?";
+
             $stmt = $db->prepare($query);
+            if ($stmt === false) {
+                throw new Exception('Error al preparar la consulta SQL: ' . $db->error);
+            }
+
             // Bind de parámetros
             $stmt->bind_param('iisi', $estado, $transacion, $date, $this->id_usuario);
+
             // Ejecutar la consulta
             $stmt->execute();
+
             // Obtener resultados
             $result = $stmt->get_result();
-            // Cerrar sentencia
-            $stmt->close();
+
+            // Obtener la fila de resultados
             $row = $result->fetch_assoc();
-            //$db->close();
+
+            // Cerrar sentencia y resultado
+            $stmt->close();
+            $result->close();
+
             return $row['apertura'];
         } catch (Exception $e) {
             // Manejo de la excepción
             echo "Error: " . $e->getMessage();
         }
     }
+
     public function transaciones($estado)
     {
         $db = $this->db;
         $date = date("Y-m-d");
         try {
             $query = "SELECT count(*) as transaciones
-                FROM fincoop.transacciones
+                FROM transacciones
                 WHERE estado_transacion_id = ?
                 AND tipo_transaccion_id not in (1, 2)
                 AND fecha_creacion = ?
@@ -160,7 +172,7 @@ class caja
         $date = date("Y-m-d");
         try {
             $query = "SELECT count(*) as transaciones
-                FROM fincoop.transacciones
+                FROM transacciones
                 WHERE estado_transacion_id = 1
                 AND tipo_transaccion_id = ?
                 AND fecha_creacion = ?
@@ -232,7 +244,7 @@ class caja
         $transacion = 3;
         try {
             $query = "SELECT count(*) as transaciones
-                FROM fincoop.transacciones
+                FROM transacciones
                 WHERE estado_transacion_id = 1
                 AND tipo_transaccion_id = ?
                 AND fecha_creacion = ?
