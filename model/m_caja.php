@@ -20,7 +20,7 @@ class caja
         $cantidad = $_POST['cantidad']; // el correo electrónico proporcionado por el usuario
         $date = date("Y-m-d");
         $transacion = 1;
-        $estado = 1;
+        echo $estado = 1;
 
         try {
             $query = "SELECT count(*) 

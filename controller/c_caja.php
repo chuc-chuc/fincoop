@@ -52,4 +52,3 @@ class CajaController {
         require_once "404ruta.php";
     }
 }
-?>
