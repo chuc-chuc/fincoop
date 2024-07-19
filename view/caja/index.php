@@ -31,7 +31,7 @@ include_once 'view/caja/head.php';
             <h3 class="text-lg font-semibold mb-2">Estatus del Cajero:</h3>
             <ul class="list-disc list-inside">
                 <li id="transacciones" class="mb-1">Cantidad de Transacciones: <span class="font-bold"><?php echo $transaciones ?></span></li>
-                <li id="reversas" class="mb-1">Cantidad de Reversas: <span class="font-bold"><?php echo $transaciones ?></span></li>
+                <li id="reversas" class="mb-1">Cantidad de Reversas: <span class="font-bold"><?php echo $reversas ?></span></li>
                 <li id="pedidosEfectivo" class="mb-1">Pedidos de Efectivo: <span class="font-bold"><?php echo $pedido ?></span></li>
                 <li id="pedidosEfectivo" class="mb-1">Envios de Efectivo: <span class="font-bold"><?php echo $envio ?></span></li>
             </ul>

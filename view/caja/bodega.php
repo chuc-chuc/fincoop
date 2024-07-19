@@ -73,32 +73,29 @@ include_once 'view/caja/head.php';
         </button>
     </div>
     <div class="overflow-x-auto mt-6 rounded-lg bg-white">
-        <table class="table-auto border-collapse w-full rounded-lg border shadow">
+        <table id="tablaTransacciones" class="table-auto border-collapse w-full rounded-lg border shadow">
             <thead>
                 <tr class="rounded-lg text-sm font-medium text-gray-700 text-left" style="font-size: 0.9674rem">
-                    <th class="px-4 py-2 bg-gray-200 " style="background-color:#f8f8f8">Monto</th>
-                    <th class="px-4 py-2 " style="background-color:#f8f8f8">Boleta</th>
-                    <th class="px-4 py-2 " style="background-color:#f8f8f8">Fecha hora</th>
-                    <th class="px-4 py-2 " style="background-color:#f8f8f8">Estado</th>
+                    <th class="px-4 py-2">Transacion</th>
+                    <th class="px-4 py-2">Monto</th>
+                    <th class="px-4 py-2">Boleta</th>
+                    <th class="px-4 py-2">Fecha hora</th>
+                    <th class="px-4 py-2">Estado</th>
                 </tr>
             </thead>
             <tbody class="text-sm font-normal text-gray-700">
-                <tr class="hover:bg-blue-100 border-b even:bg-gray-50 py-10">
-                    <td class="px-4 py-4">20,000</td>
-                    <td class="px-4 py-4">b-50</td>
-                    <td class="px-4 py-4">2024-04-28 11:10:52</td>
-                    <th class="px-4 py-2 text-blue-600">Aprobado</th>
-                </tr>
+                <!-- Aquí se agregarán las filas de transacciones dinámicamente -->
             </tbody>
         </table>
     </div>
+
 </div>
 <script>
     // JavaScript para manejar eventos del modal
     const abrirModal = document.getElementById('abrirModal');
     const cerrarModal = document.getElementById('cerrarModal');
     const modal = document.getElementById('miModal');
-    const formulario = document.getElementById('miFormulario');
+    const formulario = document.getElementById('bodega');
 
     // Función para abrir el modal
     abrirModal.addEventListener('click', () => {
@@ -170,6 +167,7 @@ include_once 'view/caja/head.php';
                     console.log(response);
                     //alert('Formulario enviado correctamente. Respuesta del servidor: ' + response);
                     if (response == 'Listo') {
+                        $("#cerrarModal").click();
                         Swal.fire({
                             icon: "success",
                             title: "Operación Realizada",
@@ -177,6 +175,7 @@ include_once 'view/caja/head.php';
                             tshowConfirmButton: false,
                             timer: 3500
                         });
+
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -190,6 +189,50 @@ include_once 'view/caja/head.php';
                 }
             });
         });
+    });
+</script>
+<script>
+    // Función para cargar y mostrar las transacciones
+    function cargarTransacciones() {
+        // Objeto con los datos a enviar al servidor
+        metodo = 'pedidos'
+        var datos = {
+            metodo: metodo
+        };
+
+        $.ajax({
+            url: 'caja.php', // Ruta del script PHP en tu servidor que lista las transacciones
+            type: 'POST', // Método HTTP
+            dataType: 'json', // Tipo de datos esperados del servidor (JSON en este caso)
+            data: datos, // Datos a enviar
+            success: function(data) {
+                // Limpiar tabla antes de agregar datos nuevos
+                $('#tablaTransacciones tbody').empty();
+
+                // Iterar sobre los datos recibidos y agregar filas a la tabla
+                $.each(data, function(index, transaccion) {
+                    var fila = '<tr>' +
+                        '<td>' + transaccion.nombre + '</td>' +
+                        '<td>' + transaccion.monto + '</td>' +
+                        '<td>' + transaccion.boleta + '</td>' +
+                        '<td>' + transaccion.fechaHora + '</td>' +
+                        '<td>' + transaccion.estado + '</td>' +
+                        '</tr>';
+                    $('#tablaTransacciones tbody').append(fila);
+                });
+            },
+            error: function(xhr, status, error) {
+                // Manejar errores de la solicitud AJAX
+                console.error(error);
+                alert('Error al cargar las transacciones. Inténtalo de nuevo.');
+            }
+        });
+    }
+
+    // Llamar a la función para cargar las transacciones al cargar la página
+    $(document).ready(function() {
+        // Cargar las transacciones al inicio (aquí puedes ajustar el tipo de solicitud según sea necesario)
+        cargarTransacciones();
     });
 </script>
 <?php

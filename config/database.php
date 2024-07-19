@@ -1,6 +1,6 @@
 <?php
 function db() {
-    $servidor = "localhost";
+    $servidor = "193.203.166.72";
     $usuario = "u542351893_fin";
     $password = "Chuc1234#";
     $db = "u542351893_fin";

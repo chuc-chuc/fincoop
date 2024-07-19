@@ -2,7 +2,6 @@
 require_once 'database.php';
 function head()
 {
-        date_default_timezone_set("America/Guatemala");
 ?>
     <!DOCTYPE html>
     <html lang="es">

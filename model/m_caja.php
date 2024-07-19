@@ -54,15 +54,15 @@ class caja
                     throw new Exception("Ya existe una apertura de caja para el día de hoy.");
                 } else {
                     $query = "INSERT INTO `transacciones` 
-                    (`estado_transacion_id`, `tipo_transaccion_id`, `usuario`, `total`) 
-                    VALUES (?, ?, ?, ?)";
+                    (`estado_transacion_id`, `tipo_transaccion_id`, `usuario`, `total`, fecha_creacion) 
+                    VALUES (?, ?, ?, ?, ?)";
 
                     $stmt = $db->prepare($query);
                     if (!$stmt) {
                         throw new Exception("Error al preparar la consulta: " . $db->error);
                     }
                     // Bind de parámetros
-                    $stmt->bind_param('iiid', $estado, $transacion, $this->id_usuario, $cantidad);
+                    $stmt->bind_param('iiids', $estado, $transacion, $this->id_usuario, $cantidad, $date);
 
                     // Ejecutar la consulta
                     $stmt->execute();
@@ -141,7 +141,7 @@ class caja
     public function transaciones($estado)
     {
         $db = $this->db;
-        $date = date("Y-m-d");
+        $date = date('Y-m-d');
         try {
             $query = "SELECT count(*) as transaciones
                 FROM transacciones
@@ -169,7 +169,7 @@ class caja
     public function cantidad_tran($transacion)
     {
         $db = $this->db;
-        $date = date("Y-m-d");
+        $date = date('Y-m-d');
         try {
             $query = "SELECT count(*) as transaciones
                 FROM transacciones
@@ -201,23 +201,23 @@ class caja
             echo 'Caja Cerrada Realice la Apetura';
             return;
         }
-        $db = $this->db;    
+        $db = $this->db;
         $date = date("Y-m-d");
-        $transacion = 2;
+        $transacion = 5;
         $estado = 3;
         $efectivo = $_POST['efectivo'];
         $boleta = $_POST['boleta'];
         $comentario = $_POST['comentario'];
         try {
             $query = "INSERT INTO `transacciones` 
-                    (`estado_transacion_id`, `tipo_transaccion_id`, `usuario`, `total`, comentario, boleta) 
-                    VALUES (?, ?, ?, ?, ?, ?)";
+                    (`estado_transacion_id`, `tipo_transaccion_id`, `usuario`, `total`, comentario, boleta, fecha_creacion) 
+                    VALUES (?, ?, ?, ?, ?, ?,?)";
 
             $stmt = $db->prepare($query);
             if (!$stmt) {
                 throw new Exception("Error al preparar la consulta: " . $db->error);
             }            // Bind de parámetros
-            $stmt->bind_param('iiidss', $estado, $transacion, $this->id_usuario, $efectivo, $comentario, $boleta);
+            $stmt->bind_param('iiidsss', $estado, $transacion, $this->id_usuario, $efectivo, $comentario, $boleta, $date);
 
             // Ejecutar la consulta
             $stmt->execute();
@@ -239,28 +239,76 @@ class caja
     }
     public function envio()
     {
+        $estado_apertura = $this->estado_apertura();
+        if ($estado_apertura == 0) {
+            echo 'Caja Cerrada Realice la Apetura';
+            return;
+        }
         $db = $this->db;
         $date = date("Y-m-d");
-        $transacion = 3;
+        $transacion = 6;
+        $estado = 3;
+        $efectivo = $_POST['efectivo'];
+        $boleta = $_POST['boleta'];
+        $comentario = $_POST['comentario'];
         try {
-            $query = "SELECT count(*) as transaciones
-                FROM transacciones
-                WHERE estado_transacion_id = 1
-                AND tipo_transaccion_id = ?
-                AND fecha_creacion = ?
-                AND usuario = ?";
+            $query = "INSERT INTO `transacciones` 
+                    (`estado_transacion_id`, `tipo_transaccion_id`, `usuario`, `total`, comentario, boleta, fecha_creacion) 
+                    VALUES (?, ?, ?, ?, ?, ?,?)";
+
             $stmt = $db->prepare($query);
-            // Bind de parámetros
-            $stmt->bind_param('isi', $transacion, $date, $this->id_usuario);
+            if (!$stmt) {
+                throw new Exception("Error al preparar la consulta: " . $db->error);
+            }            // Bind de parámetros
+            $stmt->bind_param('iiidsss', $estado, $transacion, $this->id_usuario, $efectivo, $comentario, $boleta, $date);
+
             // Ejecutar la consulta
             $stmt->execute();
-            // Obtener resultados
-            $result = $stmt->get_result();
+
+            // Verificar si la inserción fue exitosa
+            if ($stmt->affected_rows > 0) {
+                echo "Listo";
+                // Aquí puedes realizar acciones adicionales si la inserción fue exitosa
+            } else {
+                throw new Exception("Error: No se pudo insertar la transacción.");
+            }
+
             // Cerrar sentencia
             $stmt->close();
-            $row = $result->fetch_assoc();
-            //$db->close();
-            return $row['transaciones'];
+        } catch (Exception $e) {
+            // Manejo de la excepción
+            echo "Error: " . $e->getMessage();
+        }
+    }
+    public function pedidos()
+    {
+        $db = $this->db;
+        $date = date("Y-m-d");
+        try {
+            $consulta = "SELECT ti.nombre, t.total as monto, t.boleta, t.fecha_creacion AS fechaHora, e.estado AS estado 
+                    FROM transacciones t
+                    inner join estado_transaccion e on t.estado_transacion_id = e.id
+                    inner join tipo_transaccion ti on ti.id = t.tipo_transaccion_id
+                    where t.fecha_creacion = '$date'";
+
+            // Ejecutar la consulta SQL
+            $resultado = $db->query($consulta);
+
+            if ($resultado->num_rows > 0) {
+                // Array para almacenar las transacciones
+                $transacciones = array();
+
+                // Obtener y almacenar los resultados de la consulta
+                while ($fila = $resultado->fetch_assoc()) {
+                    $transacciones[] = $fila;
+                }
+
+                // Devolver datos como JSON
+                header('Content-Type: application/json');
+                echo json_encode($transacciones);
+            } else {
+                echo json_encode(array('mensaje' => 'No se encontraron transacciones.'));
+            }
         } catch (Exception $e) {
             // Manejo de la excepción
             echo "Error: " . $e->getMessage();
