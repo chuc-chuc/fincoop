@@ -5,6 +5,8 @@ class caja
     private $nombre;
     private $id_agencia;
     private $id_usuario;
+    private $date;
+    private $datetime;
 
     public function __construct($conexion)
     {
@@ -12,22 +14,22 @@ class caja
         $this->nombre = $_SESSION["nombre"] . ' ' . $_SESSION["nombre"];
         $this->id_agencia = $_SESSION["idAgencia"];
         $this->id_usuario = $_SESSION['usuario_id'];
+        $this->date = date("Y-m-d");
+        $this->datetime = date("Y-m-d h:i:s");
     }
 
     public function apertura()
     {
         $db = $this->db;
         $cantidad = $_POST['cantidad']; // el correo electrónico proporcionado por el usuario
-        $date = date("Y-m-d");
         $transacion = 1;
         $estado = 1;
-
         try {
             $query = "SELECT count(*) 
                 FROM transacciones
                 WHERE estado_transacion_id = ?
                 AND tipo_transaccion_id = ?
-                AND fecha_creacion = ?
+                AND DATE(fecha_creacion) = ?
                 AND usuario = ?";
 
             $stmt = $db->prepare($query);
@@ -36,7 +38,7 @@ class caja
             }
 
             // Bind de parámetros
-            $stmt->bind_param('iisi', $estado, $transacion, $date, $this->id_usuario);
+            $stmt->bind_param('iisi', $estado, $transacion, $this->date, $this->id_usuario);
 
             // Ejecutar la consulta
             $stmt->execute();
@@ -62,7 +64,7 @@ class caja
                         throw new Exception("Error al preparar la consulta: " . $db->error);
                     }
                     // Bind de parámetros
-                    $stmt->bind_param('iiids', $estado, $transacion, $this->id_usuario, $cantidad, $date);
+                    $stmt->bind_param('iiids', $estado, $transacion, $this->id_usuario, $cantidad, $this->datetime);
 
                     // Ejecutar la consulta
                     $stmt->execute();
@@ -99,7 +101,6 @@ class caja
     public function estado_apertura()
     {
         $db = $this->db;
-        $date = date("Y-m-d");
         $transacion = 1;
         $estado = 1;
         try {
@@ -107,7 +108,7 @@ class caja
             FROM transacciones
             WHERE estado_transacion_id = ?
             AND tipo_transaccion_id = ?
-            AND fecha_creacion = ?
+            AND DATE(fecha_creacion) = ?
             AND usuario = ?";
 
             $stmt = $db->prepare($query);
@@ -116,7 +117,7 @@ class caja
             }
 
             // Bind de parámetros
-            $stmt->bind_param('iisi', $estado, $transacion, $date, $this->id_usuario);
+            $stmt->bind_param('iisi', $estado, $transacion, $this->date, $this->id_usuario);
 
             // Ejecutar la consulta
             $stmt->execute();
@@ -141,17 +142,16 @@ class caja
     public function transaciones($estado)
     {
         $db = $this->db;
-        $date = date('Y-m-d');
         try {
             $query = "SELECT count(*) as transaciones
                 FROM transacciones
                 WHERE estado_transacion_id = ?
                 AND tipo_transaccion_id not in (1, 2)
-                AND fecha_creacion = ?
+                AND date(fecha_creacion) = ?
                 AND usuario = ?";
             $stmt = $db->prepare($query);
             // Bind de parámetros
-            $stmt->bind_param('isi', $estado, $date, $this->id_usuario);
+            $stmt->bind_param('isi', $estado, $this->date, $this->id_usuario);
             // Ejecutar la consulta
             $stmt->execute();
             // Obtener resultados
@@ -169,7 +169,6 @@ class caja
     public function cantidad_tran($transacion)
     {
         $db = $this->db;
-        $date = date('Y-m-d');
         try {
             $query = "SELECT count(*) as transaciones
                 FROM transacciones
@@ -179,7 +178,7 @@ class caja
                 AND usuario = ?";
             $stmt = $db->prepare($query);
             // Bind de parámetros
-            $stmt->bind_param('isi', $transacion, $date, $this->id_usuario);
+            $stmt->bind_param('isi', $transacion, $this->date, $this->id_usuario);
             // Ejecutar la consulta
             $stmt->execute();
             // Obtener resultados
@@ -202,7 +201,6 @@ class caja
             return;
         }
         $db = $this->db;
-        $date = date("Y-m-d");
         $transacion = 5;
         $estado = 3;
         $efectivo = $_POST['efectivo'];
@@ -217,7 +215,7 @@ class caja
             if (!$stmt) {
                 throw new Exception("Error al preparar la consulta: " . $db->error);
             }            // Bind de parámetros
-            $stmt->bind_param('iiidsss', $estado, $transacion, $this->id_usuario, $efectivo, $comentario, $boleta, $date);
+            $stmt->bind_param('iiidsss', $estado, $transacion, $this->id_usuario, $efectivo, $comentario, $boleta, $this->datetime);
 
             // Ejecutar la consulta
             $stmt->execute();
@@ -245,7 +243,6 @@ class caja
             return;
         }
         $db = $this->db;
-        $date = date("Y-m-d");
         $transacion = 6;
         $estado = 3;
         $efectivo = $_POST['efectivo'];
@@ -260,7 +257,7 @@ class caja
             if (!$stmt) {
                 throw new Exception("Error al preparar la consulta: " . $db->error);
             }            // Bind de parámetros
-            $stmt->bind_param('iiidsss', $estado, $transacion, $this->id_usuario, $efectivo, $comentario, $boleta, $date);
+            $stmt->bind_param('iiidsss', $estado, $transacion, $this->id_usuario, $efectivo, $comentario, $boleta, $this->datetime);
 
             // Ejecutar la consulta
             $stmt->execute();
@@ -283,13 +280,13 @@ class caja
     public function pedidos()
     {
         $db = $this->db;
-        $date = date("Y-m-d");
         try {
             $consulta = "SELECT ti.nombre, t.total as monto, t.boleta, t.fecha_creacion AS fechaHora, e.estado AS estado 
                     FROM transacciones t
                     inner join estado_transaccion e on t.estado_transacion_id = e.id
                     inner join tipo_transaccion ti on ti.id = t.tipo_transaccion_id
-                    where t.fecha_creacion = '$date'";
+                    where date(t.fecha_creacion) = '$this->date'
+                    AND t.usuario = '$this->id_usuario'";
 
             // Ejecutar la consulta SQL
             $resultado = $db->query($consulta);

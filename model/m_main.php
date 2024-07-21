@@ -43,6 +43,14 @@ class main
                 $_SESSION['idPerfil'] = $row['idPerfil'];
                 $_SESSION['fechaCreacion'] = $row['fechaCreacion'];
                 echo "Listo";
+                $query2 = "SET time_zone = '-06:00'";
+                $stmt2 = $db->prepare($query2);
+
+                // Ejecutar la consulta
+                $stmt2->execute();
+
+                // Cerrar sentencia
+                $stmt2->close();
             }
         }
 
