@@ -108,7 +108,7 @@ class caja
             FROM transacciones
             WHERE estado_transacion_id = ?
             AND tipo_transaccion_id = ?
-            AND DATE(fecha_creacion) = ?
+            AND date(fecha_creacion) = ?
             AND usuario = ?";
 
             $stmt = $db->prepare($query);
@@ -174,7 +174,7 @@ class caja
                 FROM transacciones
                 WHERE estado_transacion_id = 1
                 AND tipo_transaccion_id = ?
-                AND fecha_creacion = ?
+                AND date(fecha_creacion) = ?
                 AND usuario = ?";
             $stmt = $db->prepare($query);
             // Bind de parámetros
@@ -286,7 +286,9 @@ class caja
                     inner join estado_transaccion e on t.estado_transacion_id = e.id
                     inner join tipo_transaccion ti on ti.id = t.tipo_transaccion_id
                     where date(t.fecha_creacion) = '$this->date'
-                    AND t.usuario = '$this->id_usuario'";
+                    AND t.usuario = '$this->id_usuario'
+                    AND t.tipo_transaccion_id in (5,6)
+                    ";
 
             // Ejecutar la consulta SQL
             $resultado = $db->query($consulta);
@@ -304,7 +306,19 @@ class caja
                 header('Content-Type: application/json');
                 echo json_encode($transacciones);
             } else {
-                echo json_encode(array('mensaje' => 'No se encontraron transacciones.'));
+                // Encabezado para indicar que se enviará JSON
+                header('Content-Type: application/json');
+
+                // Simular respuesta JSON según tu ejemplo
+                echo json_encode(array(
+                    array(
+                        'nombre' => 'No se encontraron transacciones.',
+                        'monto' => '',
+                        'boleta' => '',
+                        'fechaHora' => '',
+                        'estado' => ''
+                    )
+                ));
             }
         } catch (Exception $e) {
             // Manejo de la excepción

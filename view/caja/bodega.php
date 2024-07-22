@@ -175,7 +175,7 @@ include_once 'view/caja/head.php';
                             tshowConfirmButton: false,
                             timer: 3500
                         });
-
+                        cargarTransacciones();
                     } else {
                         Swal.fire({
                             icon: "error",
@@ -206,6 +206,7 @@ include_once 'view/caja/head.php';
             dataType: 'json', // Tipo de datos esperados del servidor (JSON en este caso)
             data: datos, // Datos a enviar
             success: function(data) {
+                console.log(data);
                 // Limpiar tabla antes de agregar datos nuevos
                 $('#tablaTransacciones tbody').empty();
 

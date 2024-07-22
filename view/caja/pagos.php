@@ -2,6 +2,31 @@
 include_once 'view/caja/head.php';
 ?>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+<style>
+    /* Estilos para los botones de las pestañas */
+    .tab-btn {
+        background-color: #d1d5db;
+        /* Fondo gris para las pestañas inactivas */
+        color: #1f2937;
+        /* Texto negro para las pestañas inactivas */
+    }
+
+    .tab-btn.active {
+        background-color: #1f2937;
+        /* Fondo negro para la pestaña activa */
+        color: #ffffff;
+        /* Texto blanco para la pestaña activa */
+    }
+
+    /* Estilos para el contenido de las pestañas */
+    .tab-content {
+        display: none;
+    }
+
+    .tab-content.active {
+        display: block;
+    }
+</style>
 
 <div class="bg-gray-100">
     <div class="bg-gray-100 p-8">
@@ -77,31 +102,22 @@ include_once 'view/caja/head.php';
         </div>
         <!-- Contenido del formulario -->
         <div class="bg-white p-5 rounded shadow">
-            <form id="searchCreditosForm" class="mb-4">
-                <h1 class="text-xl font-bold">Buscar Créditos</h1>
-                <div>
-                    <label for="identificacion" class="block text-sm font-medium text-gray-700">Identificación del Dueño:</label>
-                    <div class="mt-1 relative rounded-md shadow-sm">
-                        <input type="text" id="identificacion" name="identificacion" class="focus:ring-indigo-500 ring-2 ring-blue-300 ring-inset focus:border-indigo-500 block w-full pl-3 pr-12 py-2 sm:text-sm border-gray-300 rounded-md" placeholder="Ingrese identificación">
-                    </div>
+            <div class="mx-auto bg-white rounded shadow">
+                <div class="flex">
+                    <!-- Pestaña 1 -->
+                    <button class="tab-btn bg-blue-500 text-white px-4 py-2 mr-2 rounded-tl rounded-tr focus:outline-none active" data-tab="tab1">Por Nombre</button>
+                    <!-- Pestaña 2 -->
+                    <button class="tab-btn bg-blue-500 text-white px-4 py-2 ml-2 rounded-tl rounded-tr focus:outline-none" data-tab="tab2">Por DPI</button>
                 </div>
-                <div class="mt-4">
-                    <label for="nombre" class="block text-sm font-medium text-gray-700">Nombre del Dueño:</label>
-                    <div class="mt-1 relative rounded-md shadow-sm">
-                        <input type="text" id="nombre" name="nombre" class="focus:ring-indigo-500 ring-2 ring-blue-300 ring-inset focus:border-indigo-500 block w-full pl-3 pr-12 py-2 sm:text-sm border-gray-300 rounded-md" placeholder="Ingrese nombre">
-                    </div>
+
+                <!-- Contenido de las pestañas -->
+                <div id="tab1" class="tab-content mt-4 active">
+                    <p>Contenido de la pestaña 1...</p>
                 </div>
-                <div class="mt-4">
-                    <label for="apellido" class="block text-sm font-medium text-gray-700">Apellido del Dueño:</label>
-                    <div class="mt-1 relative rounded-md shadow-sm">
-                        <input type="text" id="apellido" name="apellido" class="focus:ring-indigo-500 ring-2 ring-blue-300 ring-inset focus:border-indigo-500 block w-full pl-3 pr-12 py-2 sm:text-sm border-gray-300 rounded-md" placeholder="Ingrese apellido">
-                    </div>
+                <div id="tab2" class="tab-content mt-4">
+                    <p>Contenido de la pestaña 2...</p>
                 </div>
-                <div class="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                    <button type="submit" class="inline-flex w-2/3 justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2">Deactivate</button>
-                    <button type="button" id="clearForm" class="mt-3 inline-flex w-2/3 justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:col-start-1 sm:mt-0">Cancel</button>
-                </div>
-            </form>
+            </div>
             <div id="listaCreditos" class="hidden">
                 <h2 class="text-lg font-semibold">Créditos Vinculados</h2>
                 <table class="w-full text-sm text-left text-gray-500">
@@ -150,6 +166,30 @@ include_once 'view/caja/head.php';
             $('#creditosContainer').empty();
             $('#listaCreditos').hide();
         }
+    });
+</script>
+
+<!-- Script para manejar las pestañas con JavaScript -->
+<script>
+    $(document).ready(function() {
+        // Mostrar la pestaña activa al inicio
+        $('.tab-content.active').show();
+
+        // Manejo de clics en los botones de pestañas
+        $('.tab-btn').click(function() {
+            // Obtener el ID de la pestaña desde el atributo data
+            var tabId = $(this).attr('data-tab');
+
+            // Cambiar clase activa entre los botones de pestañas
+            $('.tab-btn').removeClass('active');
+            $(this).addClass('active');
+
+            // Ocultar todos los contenidos de pestañas
+            $('.tab-content').removeClass('active').hide();
+
+            // Mostrar el contenido de la pestaña seleccionada
+            $('#' + tabId).addClass('active').show();
+        });
     });
 </script>
 <?php
