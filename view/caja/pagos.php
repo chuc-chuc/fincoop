@@ -102,29 +102,55 @@ include_once 'view/caja/head.php';
         </div>
         <!-- Contenido del formulario -->
         <div class="bg-white p-5 rounded shadow">
-            <div class="mx-auto bg-white rounded shadow">
+            <div class="mx-auto bg-white rounded ">
                 <div class="flex">
                     <!-- Pestaña 1 -->
-                    <button class="tab-btn bg-blue-500 text-white px-4 py-2 mr-2 rounded-tl rounded-tr focus:outline-none active" data-tab="tab1">Por Nombre</button>
+                    <button class="tab-btn bg-blue-500 text-white px-4 py-2 mr-1 rounded-tl rounded-tr focus:outline-none active" data-tab="tab1">Por Nombre</button>
                     <!-- Pestaña 2 -->
-                    <button class="tab-btn bg-blue-500 text-white px-4 py-2 ml-2 rounded-tl rounded-tr focus:outline-none" data-tab="tab2">Por DPI</button>
+                    <button class="tab-btn bg-blue-500 text-white px-4 py-2 ml-1 rounded-tl rounded-tr focus:outline-none" data-tab="tab2">Por DPI</button>
                 </div>
 
                 <!-- Contenido de las pestañas -->
-                <div id="tab1" class="tab-content mt-4 active">
-                    <p>Contenido de la pestaña 1...</p>
+                <div id="tab1" class="tab-content mt-2 active">
+                    <div class="container mx-auto mt-2">
+                        <form id="buscar_nombre" class="bg-white border rounded px-4 pt-2 pb-2 mb-4">
+                            <input type="hidden" name="metodo" value="buscar_nombre">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="mb-1">
+                                    <label for="p_nombre" class="block text-gray-700 text-sm font-bold mb-1">Primer Nombre</label>
+                                    <input type="text" class="focus:ring-indigo-500 ring-2 ring-blue-300 ring-inset focus:border-indigo-500 block w-full pl-3 pr-12 py-2 sm:text-sm border-gray-300 rounded-md" id="p_nombre" name="p_nombre" required>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="s_nombre" class="block text-gray-700 text-sm font-bold mb-1">Segundo Nombre</label>
+                                    <input type="text" class="focus:ring-indigo-500 ring-2 ring-blue-300 ring-inset focus:border-indigo-500 block w-full pl-3 pr-12 py-2 sm:text-sm border-gray-300 rounded-md" id="s_nombre" name="s_nombre">
+                                </div>
+                                <div class="mb-1">
+                                    <label for="p_apellido" class="block text-gray-700 text-sm font-bold mb-1">Primer Apellido</label>
+                                    <input type="text" class="focus:ring-indigo-500 ring-2 ring-blue-300 ring-inset focus:border-indigo-500 block w-full pl-3 pr-12 py-2 sm:text-sm border-gray-300 rounded-md" id="p_apellido" name="p_apellido" required>
+                                </div>
+                                <div class="mb-1">
+                                    <label for="s_apellido" class="block text-gray-700 text-sm font-bold mb-1">Segundo Apellido</label>
+                                    <input type="text" class="focus:ring-indigo-500 ring-2 ring-blue-300 ring-inset focus:border-indigo-500 block w-full pl-3 pr-12 py-2 sm:text-sm border-gray-300 rounded-md" id="s_apellido" name="s_apellido">
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 mt-4 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Buscar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
                 <div id="tab2" class="tab-content mt-4">
                     <p>Contenido de la pestaña 2...</p>
                 </div>
             </div>
-            <div id="listaCreditos" class="hidden">
+            <div id="listaCreditos">
                 <h2 class="text-lg font-semibold">Créditos Vinculados</h2>
-                <table class="w-full text-sm text-left text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                <table class="w-full text-sm text-left text-gray-500" id="tablaTransacciones">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-100">
                         <tr>
                             <th class="py-3 px-6">Crédito</th>
                             <th class="py-3 px-6">Datos Crédito</th>
+                            <th class="py-3 px-6">Socio</th>
                             <th class="py-3 px-6">Acciones</th>
                         </tr>
                     </thead>
@@ -154,8 +180,6 @@ include_once 'view/caja/head.php';
     cerrarModal.addEventListener('click', () => {
         modal.classList.add('hidden');
         $('#searchCreditosForm')[0].reset();
-        $('#creditosContainer').empty();
-        $('#listaCreditos').hide();
     });
 
     // Función para cerrar el modal al hacer clic fuera del contenido o el título
@@ -163,8 +187,6 @@ include_once 'view/caja/head.php';
         if (event.target === modal) {
             modal.classList.add('hidden');
             $('#searchCreditosForm')[0].reset();
-            $('#creditosContainer').empty();
-            $('#listaCreditos').hide();
         }
     });
 </script>
@@ -189,6 +211,57 @@ include_once 'view/caja/head.php';
 
             // Mostrar el contenido de la pestaña seleccionada
             $('#' + tabId).addClass('active').show();
+        });
+    });
+</script>
+
+
+
+<script>
+    $(document).ready(function() {
+        $('#buscar_nombre').submit(function(event) {
+            event.preventDefault(); // Evitar el envío normal del formulario
+
+            // Crear un objeto FormData con los datos del formulario
+            var formData = new FormData(this);
+
+            // Enviar los datos a través de AJAX
+            $.ajax({
+                url: 'caja.php', // Ruta del script PHP en tu servidor que procesa el formulario
+                type: 'POST', // Método HTTP
+                dataType: 'json', // Tipo de datos esperados del servidor (JSON en este caso)
+                data: formData, // Datos a enviar
+                processData: false, // Prevenir que jQuery procese los datos
+                contentType: false, // Prevenir que jQuery establezca el Content-Type
+                success: function(data) {
+                    console.log(data)
+                    // Limpiar tabla antes de agregar datos nuevos
+                    $('#tablaTransacciones tbody').empty();
+
+                    // Iterar sobre los datos recibidos y agregar filas a la tabla
+                    $.each(data, function(index, transaccion) {
+                        var fila = '<tr>' +
+                            '<td class="py-3 px-4"><span class = "text-sm font-semibold text-gray-900" >' + transaccion.id + '</span></td > ' +
+                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Desembolso: </span>' + transaccion.fecha_desembolso + '</p><p><span class = "text-sm font-semibold text-gray-900"> Saldo: </span>' + transaccion.saldo + '</p><p><span class = "text-sm font-semibold text-gray-900"> Estado: </span>' + transaccion.estado + '</p></td > ' +
+                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Nombre: </span>' + transaccion.p_nombre + ' ' + transaccion.s_nombre + ' ' + transaccion.p_apellido + ' ' + transaccion.s_apellido + '</p><p><span class = "text-sm font-semibold text-gray-900" > DPI </span>' + transaccion.socios_dpi + '</p></td > ' +
+                            '<td class="py-3 px-4"><button class="copyButton" data-clipboard-text="' + transaccion.id + '"><img src="https://img.icons8.com/ios-glyphs/30/000000/copy.png"/></button></td > ' +
+                            '</tr>';
+                        $('#tablaTransacciones tbody').append(fila);
+                    });
+                    // Inicializar ClipboardJS y manejar el evento de éxito para el cambio de color
+                    new ClipboardJS('.copyButton').on('success', function(e) {
+                        $(e.trigger).find('img').css('filter', 'invert(0.5) sepia(1) saturate(5) hue-rotate(80deg) brightness(0.8)');
+                        setTimeout(function() {
+                            $(e.trigger).find('img').css('filter', '');
+                        }, 1000); // Restablece el filtro después de 1 segundo
+                    });
+                },
+                error: function(xhr, status, error) {
+                    // Manejar errores de la solicitud AJAX
+                    console.error(error);
+                    alert('Error al cargar las transacciones. Inténtalo de nuevo.');
+                }
+            });
         });
     });
 </script>

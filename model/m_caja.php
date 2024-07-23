@@ -325,4 +325,85 @@ class caja
             echo "Error: " . $e->getMessage();
         }
     }
+    public function buscar_nombre()
+    {
+        // Establecer el encabezado para devolver JSON
+        header('Content-Type: application/json');
+
+        // Conexión a la base de datos
+        $db = $this->db;
+
+        try {
+            // Obtener y limpiar los datos enviados por POST
+            $p_nombre = isset($_POST['p_nombre']) ? rtrim($_POST['p_nombre']) : '';
+            $s_nombre = isset($_POST['s_nombre']) ? rtrim($_POST['s_nombre']) : '';
+            $p_apellido = isset($_POST['p_apellido']) ? rtrim($_POST['p_apellido']) : '';
+            $s_apellido = isset($_POST['s_apellido']) ? rtrim($_POST['s_apellido']) : '';
+
+            // Construir la cláusula WHERE en función de los valores recibidos
+            $whereClause = '';
+            if (!empty($p_nombre)) {
+                $whereClause .= "s.p_nombre = '" . $db->real_escape_string($p_nombre) . "' AND ";
+            }
+            if (!empty($s_nombre)) {
+                $whereClause .= "s.s_nombre = '" . $db->real_escape_string($s_nombre) . "' AND ";
+            }
+            if (!empty($p_apellido)) {
+                $whereClause .= "s.p_apellido = '" . $db->real_escape_string($p_apellido) . "' AND ";
+            }
+            if (!empty($s_apellido)) {
+                $whereClause .= "s.s_apellido = '" . $db->real_escape_string($s_apellido) . "' AND ";
+            }
+
+            // Eliminar el último 'AND ' sobrante
+            $whereClause = rtrim($whereClause, ' AND ');
+
+            // Construir la consulta SQL
+            $consulta = "SELECT c.id, saldo, DATE(fecha_desembolso) as fecha_desembolso, estado, socios_dpi, p_nombre, s_nombre, p_apellido, s_apellido
+        FROM cartera_credito c
+        INNER JOIN socios s ON c.socios_dpi = s.dpi
+        INNER JOIN estado_credito e ON e.id = c.estado_credito_id";
+            if (!empty($whereClause)) {
+                $consulta .= " WHERE " . $whereClause;
+            }
+
+            // Registrar la consulta para depuración
+            error_log("Consulta SQL: " . $consulta);
+
+            // Ejecutar la consulta SQL
+            $resultado = $db->query($consulta);
+
+            if ($db->error) {
+                throw new Exception("Error en la consulta SQL: " . $db->error);
+            }
+
+            if ($resultado->num_rows > 0) {
+                // Array para almacenar las transacciones
+                $transacciones = array();
+
+                // Obtener y almacenar los resultados de la consulta
+                while ($fila = $resultado->fetch_assoc()) {
+                    $transacciones[] = $fila;
+                }
+
+                // Devolver datos como JSON
+                echo json_encode($transacciones);
+            } else {
+                // Devolver un mensaje de no se encontraron resultados
+                echo json_encode(array(
+                    array(
+                        'id' => 'No se encontraron transacciones.',
+                        'monto' => '',
+                        'boleta' => '',
+                        'fechaHora' => '',
+                        'estado' => ''
+                    )
+                ));
+            }
+        } catch (Exception $e) {
+            // Manejo de la excepción
+            error_log("Error: " . $e->getMessage());
+            echo json_encode(array('error' => $e->getMessage()));
+        }
+    }
 }
