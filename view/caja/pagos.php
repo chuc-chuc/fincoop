@@ -253,12 +253,21 @@ include_once 'view/caja/head.php';
 
                     // Iterar sobre los datos recibidos y agregar filas a la tabla
                     $.each(data, function(index, transaccion) {
-                        var fila = '<tr>' +
-                            '<td class="py-3 px-4"><span class = "text-sm font-semibold text-gray-900" >' + transaccion.id + '</span></td > ' +
-                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Desembolso: </span>' + transaccion.fecha_desembolso + '</p><p><span class = "text-sm font-semibold text-gray-900"> Saldo: </span>' + transaccion.saldo + '</p><p><span class = "text-sm font-semibold text-gray-900"> Estado: </span>' + transaccion.estado + '</p></td > ' +
-                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Nombre: </span>' + transaccion.nombre + '</p></td > ' +
-                            '<td class="py-3 px-4"><button class="copyButton" data-clipboard-text="' + transaccion.id + '"><img src="https://img.icons8.com/ios-glyphs/30/000000/copy.png"/></button></td > ' +
-                            '</tr>';
+                        var fila = `
+                        <tr>
+                            <td class="py-3 px-4">
+                                <span class="text-sm font-semibold text-gray-900">${transaccion.id}</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <p><span class="text-sm font-semibold text-gray-900">Desembolso:</span> ${transaccion.fecha_desembolso}</p>
+                                <p><span class="text-sm font-semibold text-gray-900">Saldo:</span> ${transaccion.saldo}</p>
+                                <p><span class="text-sm font-semibold text-gray-900">Estado:</span> ${transaccion.estado}</p>
+                            </td>
+                            <td class="py-3 px-4">
+                                <p><span class="text-sm font-semibold text-gray-900">Nombre:</span> ${transaccion.nombre}</p>
+                            </td>
+                            <td class="py-3 px-4"><button class="copyButton" data-clipboard-text="${transaccion.id}"><img src="https://img.icons8.com/ios-glyphs/30/000000/copy.png"/></button></td></tr>
+                            `;
                         $('#tablaTransacciones tbody').append(fila);
                     });
                     // Inicializar ClipboardJS y manejar el evento de éxito para el cambio de color
@@ -301,12 +310,21 @@ include_once 'view/caja/head.php';
 
                     // Iterar sobre los datos recibidos y agregar filas a la tabla
                     $.each(data, function(index, transaccion) {
-                        var fila = '<tr>' +
-                            '<td class="py-3 px-4"><span class = "text-sm font-semibold text-gray-900" >' + transaccion.id + '</span></td > ' +
-                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Desembolso: </span>' + transaccion.fecha_desembolso + '</p><p><span class = "text-sm font-semibold text-gray-900"> Saldo: </span>' + transaccion.saldo + '</p><p><span class = "text-sm font-semibold text-gray-900"> Estado: </span>' + transaccion.estado + '</p></td > ' +
-                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Nombre: </span>' + transaccion.nombre + '</p></td > ' +
-                            '<td class="py-3 px-4"><button class="copyButton" data-clipboard-text="' + transaccion.id + '"><img src="https://img.icons8.com/ios-glyphs/30/000000/copy.png"/></button></td > ' +
-                            '</tr>';
+                        var fila = `
+                        <tr>
+                            <td class="py-3 px-4">
+                                <span class="text-sm font-semibold text-gray-900">${transaccion.id}</span>
+                            </td>
+                            <td class="py-3 px-4">
+                                <p><span class="text-sm font-semibold text-gray-900">Desembolso:</span> ${transaccion.fecha_desembolso}</p>
+                                <p><span class="text-sm font-semibold text-gray-900">Saldo:</span> ${transaccion.saldo}</p>
+                                <p><span class="text-sm font-semibold text-gray-900">Estado:</span> ${transaccion.estado}</p>
+                            </td>
+                            <td class="py-3 px-4">
+                                <p><span class="text-sm font-semibold text-gray-900">Nombre:</span> ${transaccion.nombre}</p>
+                            </td>
+                            <td class="py-3 px-4"><button class="copyButton" data-clipboard-text="${transaccion.id}"><img src="https://img.icons8.com/ios-glyphs/30/000000/copy.png"/></button></td></tr>
+                            `;
                         $('#tablaTransacciones tbody').append(fila);
                     });
                     // Inicializar ClipboardJS y manejar el evento de éxito para el cambio de color
