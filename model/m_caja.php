@@ -359,13 +359,107 @@ class caja
             $whereClause = rtrim($whereClause, ' AND ');
 
             // Construir la consulta SQL
-            $consulta = "SELECT c.id, saldo, DATE(fecha_desembolso) as fecha_desembolso, estado, socios_dpi, p_nombre, s_nombre, p_apellido, s_apellido
-        FROM cartera_credito c
-        INNER JOIN socios s ON c.socios_dpi = s.dpi
-        INNER JOIN estado_credito e ON e.id = c.estado_credito_id";
+            $consulta = "SELECT
+                c.id, 
+                0 as saldo,
+                DATE(c.fechaInicio) as fecha_desembolso, 
+                e.descripcion as estado, 
+                s.dpi as socios_dpi,
+                CONCAT(s.p_nombre, ' ',
+                s.s_nombre, ' ',
+                s.p_apellido, ' ',
+                s.s_apellido) as nombre	
+            FROM
+                credito AS c
+                INNER JOIN
+                estado_credito AS e
+                ON 
+                    c.estado_id = e.id
+                INNER JOIN
+                socios AS s
+                ON 
+                    c.socios_dpi = s.dpi
+        ";
             if (!empty($whereClause)) {
                 $consulta .= " WHERE " . $whereClause;
             }
+
+            // Registrar la consulta para depuración
+            error_log("Consulta SQL: " . $consulta);
+
+            // Ejecutar la consulta SQL
+            $resultado = $db->query($consulta);
+
+            if ($db->error) {
+                throw new Exception("Error en la consulta SQL: " . $db->error);
+            }
+
+            if ($resultado->num_rows > 0) {
+                // Array para almacenar las transacciones
+                $transacciones = array();
+
+                // Obtener y almacenar los resultados de la consulta
+                while ($fila = $resultado->fetch_assoc()) {
+                    $transacciones[] = $fila;
+                }
+
+                // Devolver datos como JSON
+                echo json_encode($transacciones);
+            } else {
+                // Devolver un mensaje de no se encontraron resultados
+                echo json_encode(array(
+                    array(
+                        'id' => 'No se encontraron transacciones.',
+                        'monto' => '',
+                        'boleta' => '',
+                        'fechaHora' => '',
+                        'estado' => ''
+                    )
+                ));
+            }
+        } catch (Exception $e) {
+            // Manejo de la excepción
+            error_log("Error: " . $e->getMessage());
+            echo json_encode(array('error' => $e->getMessage()));
+        }
+    }
+    public function buscar_dpi()
+    {
+        // Establecer el encabezado para devolver JSON
+        header('Content-Type: application/json');
+
+        // Conexión a la base de datos
+        $db = $this->db;
+        if (!isset($_POST['dpi'])) {
+            return;
+        }
+        $dpi = $_POST['dpi'];
+
+        try {
+
+            // Construir la consulta SQL
+            $consulta = "SELECT
+                c.id, 
+                0 as saldo,
+                DATE(c.fechaInicio) as fecha_desembolso, 
+                e.descripcion as estado, 
+                s.dpi as socios_dpi,
+                CONCAT(s.p_nombre, ' ',
+                s.s_nombre, ' ',
+                s.p_apellido, ' ',
+                s.s_apellido) as nombre	
+            FROM
+                credito AS c
+                INNER JOIN
+                estado_credito AS e
+                ON 
+                    c.estado_id = e.id
+                INNER JOIN
+                socios AS s
+                ON 
+                    c.socios_dpi = s.dpi
+                WHERE s.dpi = '$dpi'
+        ";
 
             // Registrar la consulta para depuración
             error_log("Consulta SQL: " . $consulta);

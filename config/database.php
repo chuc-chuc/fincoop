@@ -1,8 +1,8 @@
 <?php
 function db() {
-    $servidor = "193.203.166.72";
+    $servidor = "localhost";
     $usuario = "u542351893_fin";
-    $password = "Chuc1234#";
+    $password = "u542351893_fin";
     $db = "u542351893_fin";
     $conexion = new mysqli($servidor, $usuario, $password, $db);
     if ($conexion->connect_error) {

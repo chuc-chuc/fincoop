@@ -91,7 +91,7 @@ include_once 'view/caja/head.php';
     <div class="rounded shadow-md w-11/12 sm:w-9/12 md:w-7/12">
         <div class="flex justify-between items-center border-b border-gray-200 bg-blue-700 p-4 rounded-t">
             <div class="flex items-center justify-center">
-                <p class="text-xl font-bold text-gray-100">Solicitar</p>
+                <p class="text-xl font-bold text-gray-100">Buscar</p>
             </div>
             <button id="cerrarModal" type="button" class="end-2.5 text-gray-100 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center" data-modal-hide="authentication-modal">
                 <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
@@ -140,7 +140,20 @@ include_once 'view/caja/head.php';
                     </div>
                 </div>
                 <div id="tab2" class="tab-content mt-4">
-                    <p>Contenido de la pestaña 2...</p>
+                    <div class="container mx-auto mt-2">
+                        <form id="buscar_dpi" class="bg-white border rounded px-4 pt-2 pb-2 mb-4">
+                            <input type="hidden" name="metodo" value="buscar_dpi">
+                            <div class="">
+                                <div class="mb-1">
+                                    <label for="p_nombre" class="block text-gray-700 text-sm font-bold mb-1">DPI</label>
+                                    <input type="number" class="focus:ring-indigo-500 ring-2 ring-blue-300 ring-inset focus:border-indigo-500 block w-full pl-3 pr-12 py-2 sm:text-sm border-gray-300 rounded-md" id="dpi" name="dpi" required>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 mt-4 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Buscar</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
             <div id="listaCreditos">
@@ -243,7 +256,55 @@ include_once 'view/caja/head.php';
                         var fila = '<tr>' +
                             '<td class="py-3 px-4"><span class = "text-sm font-semibold text-gray-900" >' + transaccion.id + '</span></td > ' +
                             '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Desembolso: </span>' + transaccion.fecha_desembolso + '</p><p><span class = "text-sm font-semibold text-gray-900"> Saldo: </span>' + transaccion.saldo + '</p><p><span class = "text-sm font-semibold text-gray-900"> Estado: </span>' + transaccion.estado + '</p></td > ' +
-                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Nombre: </span>' + transaccion.p_nombre + ' ' + transaccion.s_nombre + ' ' + transaccion.p_apellido + ' ' + transaccion.s_apellido + '</p><p><span class = "text-sm font-semibold text-gray-900" > DPI </span>' + transaccion.socios_dpi + '</p></td > ' +
+                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Nombre: </span>' + transaccion.nombre + '</p></td > ' +
+                            '<td class="py-3 px-4"><button class="copyButton" data-clipboard-text="' + transaccion.id + '"><img src="https://img.icons8.com/ios-glyphs/30/000000/copy.png"/></button></td > ' +
+                            '</tr>';
+                        $('#tablaTransacciones tbody').append(fila);
+                    });
+                    // Inicializar ClipboardJS y manejar el evento de éxito para el cambio de color
+                    new ClipboardJS('.copyButton').on('success', function(e) {
+                        $(e.trigger).find('img').css('filter', 'invert(0.5) sepia(1) saturate(5) hue-rotate(80deg) brightness(0.8)');
+                        setTimeout(function() {
+                            $(e.trigger).find('img').css('filter', '');
+                        }, 1000); // Restablece el filtro después de 1 segundo
+                    });
+                },
+                error: function(xhr, status, error) {
+                    // Manejar errores de la solicitud AJAX
+                    console.error(error);
+                    alert('Error al cargar las transacciones. Inténtalo de nuevo.');
+                }
+            });
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#buscar_dpi').submit(function(event) {
+            event.preventDefault(); // Evitar el envío normal del formulario
+
+            // Crear un objeto FormData con los datos del formulario
+            var formData = new FormData(this);
+
+            // Enviar los datos a través de AJAX
+            $.ajax({
+                url: 'caja.php', // Ruta del script PHP en tu servidor que procesa el formulario
+                type: 'POST', // Método HTTP
+                dataType: 'json', // Tipo de datos esperados del servidor (JSON en este caso)
+                data: formData, // Datos a enviar
+                processData: false, // Prevenir que jQuery procese los datos
+                contentType: false, // Prevenir que jQuery establezca el Content-Type
+                success: function(data) {
+                    console.log(data)
+                    // Limpiar tabla antes de agregar datos nuevos
+                    $('#tablaTransacciones tbody').empty();
+
+                    // Iterar sobre los datos recibidos y agregar filas a la tabla
+                    $.each(data, function(index, transaccion) {
+                        var fila = '<tr>' +
+                            '<td class="py-3 px-4"><span class = "text-sm font-semibold text-gray-900" >' + transaccion.id + '</span></td > ' +
+                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Desembolso: </span>' + transaccion.fecha_desembolso + '</p><p><span class = "text-sm font-semibold text-gray-900"> Saldo: </span>' + transaccion.saldo + '</p><p><span class = "text-sm font-semibold text-gray-900"> Estado: </span>' + transaccion.estado + '</p></td > ' +
+                            '<td class="py-3 px-4"> <p><span class = "text-sm font-semibold text-gray-900"> Nombre: </span>' + transaccion.nombre + '</p></td > ' +
                             '<td class="py-3 px-4"><button class="copyButton" data-clipboard-text="' + transaccion.id + '"><img src="https://img.icons8.com/ios-glyphs/30/000000/copy.png"/></button></td > ' +
                             '</tr>';
                         $('#tablaTransacciones tbody').append(fila);
