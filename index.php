@@ -73,7 +73,7 @@ if (isset($_SESSION['usuario_id'])) {
                         Ingresa Tus Credenciales
                     </p>
                     <div class="relative mt-3">
-                        <input class="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600 transition rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline" id="email" name="email" type="email" placeholder="Correo" required />
+                        <input class="appearance-none border pl-12 border-gray-100 shadow-sm focus:shadow-md focus:placeholder-gray-600 transition rounded-md w-full py-3 text-gray-600 leading-tight focus:outline-none focus:ring-gray-600 focus:shadow-outline" id="email" name="email" type="text" placeholder="Correo" required />
                         <div class="absolute left-0 inset-y-0 flex items-center">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 ml-3 text-gray-400 p-1" viewBox="0 0 20 20" fill="currentColor">
                                 <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
